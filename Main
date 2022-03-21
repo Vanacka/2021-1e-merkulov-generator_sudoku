@@ -1,0 +1,16 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Whitch difficulty do you prefer?");
+        System.out.println("Easy    Medium    Hard");
+        String difficulty = sc.nextLine();
+        System.out.println("Enjoy your sudoku!");
+        SudokuGameGenerator sgg = new SudokuGameGenerator();
+        sgg.generate(difficulty);
+    }
+}
