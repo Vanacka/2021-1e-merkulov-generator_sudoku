@@ -1,0 +1,60 @@
+package com.company;
+
+import java.util.Random;
+
+public class SudokuGameGenerator {
+    Random r = new Random();
+    public int matrix[][];
+    SudokuSolutionGenerator ssg;
+
+    SudokuGameGenerator() {
+        this.matrix = new int[9][9];
+        ssg = new SudokuSolutionGenerator();
+    }
+
+    public void remove(int number) {
+        int RemovedNumber = number;
+        while (RemovedNumber != 0) {
+            int CellNumber = this.r.nextInt(81);
+            int RowNumber = CellNumber / 9;
+            int ColumnNumber = CellNumber % 9;
+            if (matrix[RowNumber][ColumnNumber] != 0) {
+                matrix[RowNumber][ColumnNumber] = 0;
+                RemovedNumber--;
+            }
+        }
+    }
+
+    private int generateLevel(String difficulty) {
+        if (difficulty.equals("Easy")) {
+            return 41 + this.r.nextInt(8);
+        }
+        else if (difficulty.equals("Medium")) {
+            return 49 + this.r.nextInt(8);
+        }
+        else if (difficulty.equals("Hard")) {
+           return 57 + this.r.nextInt(8);
+        } else {
+            return 0;
+        }
+    }
+
+
+    public void generate(String difficulty) {
+        ssg.generate();
+        this.matrix = ssg.matrix;
+        System.out.println(difficulty);
+        int level = generateLevel(difficulty);
+        remove(level);
+        print();
+    }
+
+    public void print() {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(this.matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
