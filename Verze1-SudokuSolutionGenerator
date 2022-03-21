@@ -1,0 +1,56 @@
+package com.company;
+
+public class SudokuSolutionGenerator {
+    public int matrix [][];
+    PermutationGenerator pg;
+    SudokuSolutionGenerator() {
+        this.matrix = new int [9][9];
+        pg = new PermutationGenerator();
+    }
+    public void placePermutation() {
+        pg.generate();
+        for(int i = 0; i < pg.permutation.length; i++) {
+            this.matrix[0][i] = pg.permutation[i];
+        }
+    }
+
+    private void copyArraySegment(int resourceRow, int resourceStart, int resultRow, int resultStart, int segmentLength) {
+        for (int i = 0; i < segmentLength; i++) {
+            this.matrix[resultRow][resultStart + i] = this.matrix[resourceRow][resourceStart + i];
+        }
+    }
+
+    private void rowPermutation(int resourceRow, int resultRow) {
+        copyArraySegment(resourceRow, 0, resultRow, 6, 3);
+        copyArraySegment(resourceRow, 6, resultRow, 3, 3);
+        copyArraySegment(resourceRow, 3, resultRow, 0, 3);
+    }
+    private void movePermutation(int resourceRow, int resultRow) {
+        for(int i = 0; i < matrix[resultRow].length - 1; i++) {
+            matrix[resultRow][i] = matrix[resourceRow][i + 1];
+        }
+        matrix[resultRow][8] = matrix[resourceRow][0];
+
+    }
+
+    public void generate() {
+        placePermutation();
+        rowPermutation(0, 1);
+        rowPermutation(1, 2);
+        movePermutation(0,3);
+        rowPermutation(3, 4);
+        rowPermutation(4, 5);
+        movePermutation(3, 6);
+        rowPermutation(6, 7);
+        rowPermutation(7, 8);
+    }
+
+    public void print() {
+        for(int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(this.matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
