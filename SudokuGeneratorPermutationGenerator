@@ -1,0 +1,34 @@
+package com.company;
+
+import java.util.Random;
+
+public class PermutationGenerator {
+    Random r = new Random();
+    public int permutation[];
+
+    PermutationGenerator() {
+        this.permutation = new int[9];
+    }
+
+    public void generate() {
+        int NewNumber = 0;
+        for (int i = 0; i < 9; i++) {
+            boolean notNewNumber = true;
+            while (notNewNumber) {
+                NewNumber = this.r.nextInt(9) + 1;
+                notNewNumber = false;
+                for (int j = 0; j < i; j++) {
+                    if (NewNumber == permutation[j])
+                        notNewNumber = true;
+                }
+            }
+            this.permutation[i] = NewNumber;
+        }
+    }
+
+    public void print() {
+        for (int k = 0; k < this.permutation.length; k++) {
+            System.out.print(this.permutation[k] + " ");
+        }
+    }
+}
