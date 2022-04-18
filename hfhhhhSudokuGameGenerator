@@ -1,0 +1,60 @@
+package com.company;
+
+import java.util.Random;
+
+public class SudokuGameGenerator {
+    Random r = new Random();
+    public int matrix[][];
+    SudokuSolutionGenerator ssg;
+
+    SudokuGameGenerator() {
+        this.matrix = new int[9][9];
+        ssg = new SudokuSolutionGenerator();
+    }
+
+    public void remove(int Number) {
+        int RemovedNumber = Number;                           //Urcuje pocet cislic ktere vymazeme z pole s vyresenym sudoku
+        while (RemovedNumber != 0) {
+            int CellNumber = this.r.nextInt(81);       //Vygeneruje se nahodne cislo od 0-81 a to cislo je cislo policka v 2D poli (CellNumber)
+            int RowNumber = CellNumber / 9;                  //Zjisti radek vygenerovaneho cisla pomoci deleni nahodneho cisla 9 (51/9 = 5)
+            int ColumnNumber = CellNumber % 9;               //Pomoci operace modulo zjisti zbytek po deleni nahodneho cisla 9 (51 % 9 = 6)
+            if (matrix[RowNumber][ColumnNumber] != 0) {      //Policko, ktere ma cislo nahodne vygenerovaneho cila, se prepise na 0
+                matrix[RowNumber][ColumnNumber] = 0;
+                RemovedNumber--;
+            }
+        }
+    }
+
+    private int generateLevel(String difficulty) {      //Tato funkce urcuje jak tezke na vyreseni bude sudoku pomoci mazani bud to vetsiho nebo mensiho poctu cislic z 2D pole se sudoku
+        if (difficulty.equals("Easy")) {
+            return 41 + this.r.nextInt(8);
+        }
+        else if (difficulty.equals("Medium")) {
+            return 49 + this.r.nextInt(8);
+        }
+        else if (difficulty.equals("Hard")) {
+           return 57 + this.r.nextInt(8);
+        } else {
+            return 0;
+        }
+    }
+
+
+    public void generate(String difficulty) {
+        ssg.generate();
+        this.matrix = ssg.matrix;
+        System.out.println(difficulty);
+        int level = generateLevel(difficulty);      //Program zavola funkci na urceni obtiznosti sudoku ten vrati cislo kolik cisel musi byt odstraneno v zavislosti na tom jakou obtiznost si vybereme
+        remove(level);                              //Potom zavola funkci na odstraneni cisel a ta odstrani urcity pocet cisel
+        print();                                    //Pak se zavola funkce print, ktera jiz hotove sudoku vypise
+    }
+
+    public void print() {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {        //Tato funkce vypise cele 2D pole
+                System.out.print(this.matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
