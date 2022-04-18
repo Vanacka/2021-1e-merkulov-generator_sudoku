@@ -1,0 +1,121 @@
+package com.company;
+
+import java.util.Random;
+
+public class SudokuRandomSolutionGenerator {
+    Random r = new Random();
+    public int matrix [][];
+    PermutationGenerator pg;
+    SudokuRandomSolutionGenerator() {
+        this.matrix = new int[9][9];
+        pg = new PermutationGenerator();
+    }
+    private void generateSquare(int SquareLeftCornerX, int SquareLeftCornerY) {
+        pg.generate();
+        for(int i = 0; i < 3; i++) {
+            this.matrix[SquareLeftCornerX][SquareLeftCornerY + i] = pg.permutation[0 + i];
+            this.matrix[SquareLeftCornerX + 1][SquareLeftCornerY + i] = pg.permutation[3 + i];
+            this.matrix[SquareLeftCornerX + 2][SquareLeftCornerY + i] = pg.permutation[6 + i];
+        }
+    }
+    private boolean checkRow(int Number, int Row) {
+        for (int i = 0; i < this.matrix.length; i++) {
+            if (Number == this.matrix[Row][i])
+                return false;
+        }
+        return true;
+    }
+    private boolean checkColumn(int Number,int Column) {
+        for (int i = 0; i < this.matrix.length; i++){
+            if (Number == this.matrix[i][Column])
+                return false;
+        }
+        return true;
+    }
+    private boolean checkSquare(int Number, int SquareLeftCornerX, int SquareLeftCornerY) {
+        for (int i = SquareLeftCornerX; i < SquareLeftCornerX + 3; i++) {
+            for (int j = SquareLeftCornerY; j < SquareLeftCornerY + 3; j++) {
+                if (Number == this.matrix[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
+    private void fillCell(int cellRow, int cellColumn) {
+       cellRow  = 0;
+       cellColumn = 3;
+
+       for (int j = 0; j < this.matrix.length; j++) {
+           boolean goodNumber = true;
+           while (goodNumber) {
+               this.matrix[cellRow][cellColumn] = this.r.nextInt(9) + 1;
+               goodNumber = false;
+                   if (this.matrix[cellRow][cellColumn] == this.matrix[cellRow][j]) {
+                       goodNumber = true;
+                   }
+               }
+           }
+           //this.matrix[cellRow][cellColumn] = this.matrix;
+
+        /*boolean goodNumber = true;
+        while(goodNumber) {
+            for (int i = 0; i < matrix.length; i++) {
+                this.matrix[cellRow][cellColumn] = this.r.nextInt(9) + 1;
+                if(checkRow(this.matrix[cellRow][cellColumn], i) == true) {
+                    goodNumber = false;
+                }
+                else {
+                    goodNumber = true;
+                }
+            }
+             for (int l = 0; l < matrix.length; l++) {
+                this.matrix[cellRow][cellColumn] = this.r.nextInt(9) + 1;
+                if (checkColumn(this.matrix[cellRow][cellColumn], l) == true) {
+                    goodNumber = false;
+                }
+                else {
+                    goodNumber = true;
+                }
+            }
+            for (int j = 0; j <= matrix.length - 3; j = j + 3) {
+                for (int k = 0; k <= matrix[j].length - 3; k = k + 3) {
+                    this.matrix[cellRow][cellColumn] = this.r.nextInt(9) + 1;
+                    if(checkSquare(this.matrix[cellRow][cellColumn], j, k) == true) {
+                        goodNumber = false;
+                    }
+                    else {
+                        goodNumber = true;
+                    }
+                }
+            }
+        }*/
+    }
+    private void fillSquares() {
+            generateSquare(0,0);
+            generateSquare(3, 3);
+            generateSquare(6,6);
+    }
+    private void fillCells() {
+        for(int i = 0; i < this.matrix.length; i++) {
+            for(int j = 0; j < this.matrix[i].length; j++) {
+                if (this.matrix[i][j] == 0) {
+                    fillCell(i, j);
+                }
+            }
+        }
+    }
+    public void generate() {
+        fillSquares();
+        fillCells();
+    }
+
+    public void print() {
+        generateSquare(0,0);
+        for(int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(this.matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
