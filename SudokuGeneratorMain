@@ -1,0 +1,10 @@
+package com.company;
+
+public class Main {
+
+    public static void main(String[] args) {
+        SudokuRandomSolutionGenerator srsg = new SudokuRandomSolutionGenerator();
+        srsg.generate();
+        srsg.print();
+    }
+}
