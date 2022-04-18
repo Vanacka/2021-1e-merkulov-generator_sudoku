@@ -1,0 +1,33 @@
+package com.company;
+
+import java.util.Random;
+
+public class PermutationGenerator {
+    Random r = new Random();
+    public int permutation[];
+
+    PermutationGenerator () {
+        this.permutation = new int [9];
+    }
+
+    public void generate () {
+        int NewNumber = 0;
+        for(int i = 0; i < 9; i++) {                        //Vytvorena promena NewNumber je cislo, ktere chceme zkontrolovat je-li nove nebo ne
+            boolean notNewNumber = true;                    //Je zde for cyklus na to aby prochazel vsechny policka v poli
+            while (notNewNumber) {                          //Ve while cyklu se vytvori nahodne cislo od 1-9 pomoci druheho for cyklu a podminky if zkontroluje zda-li se cislo neschoduje s jinym
+                NewNumber = this.r.nextInt(9) + 1;   //Pokud ano vrati se na zacatek while cyklu a vytvori nove cislo pokud ne do pole se zapise toto cislo a cyklus se ukonci
+                notNewNumber = false;
+                for(int j = 0; j < i; j++) {
+                    if(NewNumber == permutation[j])
+                        notNewNumber = true;
+                }
+            }
+            this.permutation[i] = NewNumber;
+        }
+    }
+    public void print () {
+       for (int k = 0; k < this.permutation.length; k++) {      //Funkce vypise cele pole, ktere obsahuje permutaci
+           System.out.print(this.permutation[k] + " ");
+       }
+    }
+}
